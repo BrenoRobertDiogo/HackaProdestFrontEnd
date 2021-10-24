@@ -30,41 +30,15 @@
         crossorigin="anonymous"></script>
 
     <style type="text/css">
-        #map {
-            width: 100%;
-            height: 400px;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        }
-
-        /* This is new */
-
-        button {
-            width: 100%;
-        }
-
-        .container {
-            background-color: white;
-            height: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            padding-bottom: 50px;
-        }
-
-        .chackboxSelecionado {
-            /* border: 1px solid rgb(182, 182, 182); */
-            /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
-            /* border-radius: 5px; */
-        }
-
-        body {
-            background-color: azure;
-        }
+        
     </style>
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body >
     <!-- Navmenu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark pl-3 pr-3" style="padding-left: 50px;padding-right: 50px">
-        <a class="navbar-brand" href="/src/html/mapa.html">Wadababu</a>
+        <a class="navbar-brand" href="/html/mapa.html">Wadababu</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -73,28 +47,28 @@
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/src/html/detalhado.html">DETALHADO APAGAR DEPOIS</a>
+                    <a class="nav-link" href="/html/detalhado.html">DETALHADO APAGAR DEPOIS</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/saude">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=saude">
                         <i class="fas fa-medkit"></i> Saúde
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/educacao">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=educacao">
                         <i class="fas fa-graduation-cap"></i> Educação
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/seguranca">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=seguranca">
                         <i class="fas fa-shield-alt"></i> Segurança
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/turismo">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=turismo">
                         <i class="fas fa-suitcase-rolling"></i> Turismo
                     </a>
                 </li>
@@ -107,7 +81,7 @@
         <h1 class="d-flex justify-content-center">Bem vindo</h1>
         <h2>Quer saber onde ficam os melhores lugares? Venha comigo.</h2>
         <form class="form-inline my-2 my-lg-0 d-flex justify-content-center mt-5">
-            <input class="form-control mr-4" type="search" placeholder="Procurar lugar" name="procLugar"
+            <input class="form-control mr-4" type="search" placeholder="Procurar html/detalhado.html?pagina=municipio" name="procLugar"
                 aria-label="Search">
 
             <button class="btn btn-outline-danger my-2 my-sm-0 col-2" type="submit">Procurar</button>
@@ -169,6 +143,8 @@
     <script type="text/javascript">
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./pegaDados.js"></script>
     <script src="./mapa.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"

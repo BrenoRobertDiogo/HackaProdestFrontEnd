@@ -73,7 +73,7 @@
     </div> -->
     <!-- Navmenu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark pl-3 pr-3" style="padding-left: 50px;padding-right: 50px">
-        <a class="navbar-brand" href="/src/html/mapa.html">Wadababu</a>
+        <a class="navbar-brand" href="/html/mapa.html">Wadababu</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -82,28 +82,28 @@
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/src/html/detalhado.html">DETALHADO APAGAR DEPOIS</a>
+                    <a class="nav-link" href="/html/detalhado.html">DETALHADO APAGAR DEPOIS</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/saude">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=saude">
                         <i class="fas fa-medkit"></i> Saúde
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/educacao">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=educacao">
                         <i class="fas fa-graduation-cap"></i> Educação
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/seguranca">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=seguranca">
                         <i class="fas fa-shield-alt"></i> Segurança
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/turismo">
+                    <a class="nav-link" href="/html/detalhado.html?pagina=turismo">
                         <i class="fas fa-suitcase-rolling"></i> Turismo
                     </a>
                 </li>
@@ -116,25 +116,13 @@
         <table class="table table-sm table-hover table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Localidade</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">Logradouro</th>
                     <th scope="col" style="width: 10%"></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td> <button class="btn btn-sm btn-success"><i class="far fa-eye"></i> Ver no mapa</button> </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td> <button class="btn btn-sm btn-success"><i class="far fa-eye"></i> Ver no mapa</button> </td>
-                </tr>
+            <tbody id="tabelaDetalhe">
+                <!-- Atualizado pelo javascript -->
             </tbody>
         </table>
 
@@ -153,6 +141,7 @@
 
 
     </div>
+    <script src="./pegaDados.js"></script>
     <script src="./mapa.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"

@@ -1,8 +1,219 @@
+/* todosValores.then((resp) => {
+    
+}) */
+
+var educacaoMakers = new L.FeatureGroup();
+var listasaudeMakers = new L.FeatureGroup();
+var listasegurancaMakers = new L.FeatureGroup();
+var listaturismoagenciaMakers = new L.FeatureGroup();
+var listaturismohotelMakers = new L.FeatureGroup();
+var listaturismolocadoraCarroMakers = new L.FeatureGroup();
+var listaturismorestauranteMakers = new L.FeatureGroup();
+
+function verNoMapa(lat, long) {
+    console.log(lat, " ", long);
+    map.setView(new L.LatLng(lat, long), 12)
+}
+
+window.onload = async function () {
+    // Inicializa a pagina buscando todas as informações da API, para poder atualizar o mapa inicialmente.
+    const dados = await funcBuscaGeral()
+    var listaEducacao = dados.educacao.dados.slice(0, 50)
+    var listasaude = dados['saude'].dados.slice(0, 100)
+    var listaseguranca = dados['seguranca'].dados.slice(0, 100)
+    var listaturismoagencia = dados['turismo/agencia'].dados.slice(0, 100)
+    var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
+    var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
+    var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
+
+    var query = location.search.slice(1);
+    var partes = query.split('&');
+    var params = {};
+
+    partes.forEach(function (parte) {
+        var chaveValor = parte.split('=');
+        var chave = chaveValor[0];
+        var valor = chaveValor[1];
+        params[chave] = valor;
+    });
+
+    const BaseDadoTabela = (dado) => {
+        const rua  = dado.LOGRADOURO || dado.ENDERECO_COMPLETO_COMERCIAL
+        const nome = dado.NOME || dado.NOME_PESSOA_JURIDICA
+        var botao  = "-"
+        if( dado.LAT != null ){
+            const lat = parseFloat(dado.LAT.replace(',', '.'))
+            const long = parseFloat(dado.LONG.replace(',', '.'))
+            botao = `<button onclick="verNoMapa(${lat}, ${long});window.scrollTo(0,document.body.scrollHeight);" class="btn btn-sm btn-success"><i class="far fa-eye"></i> Ver no mapa</button>`
+        }
+        
+        var aux = ""
+        aux += "<tr>\n"
+        aux += `    <td>${rua}</td>\n`
+        aux += `    <td>${nome}</td>\n`
+        aux += `    <td>${botao}</td>\n`
+        aux += "</tr>\n"
+        return aux
+    }
+
+    const AtualizaTabela = (dados) => {
+        var aux = ""
+        dados.forEach(element => {
+            aux += BaseDadoTabela(element) + "\n";
+        });
+        document.getElementById("tabelaDetalhe").innerHTML = aux;
+    }
+
+
+    switch (params.pagina) {
+        case 'educacao':
+            console.log(listaEducacao);            
+            AtualizaTabela(listaEducacao);
+            listaEducacao.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+
+                }
+                let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                let long = parseFloat(educacao.LONG.replace(',', '.'))
+                var a = L.marker([lat, long], { icon: educacaoIco })
+                    .on('mouseover', function () {
+                        this.bindPopup(educacao.NOME)
+                            .openPopup();
+                    })
+
+                    .on('mouseover', function () {
+                        this.bindPopup(educacao.SIGLAEXTEN)
+                            .openPopup();
+                    })
+                    .addTo(map)
+                educacaoMakers.addLayer(a);
+
+            })
+            break
+        case 'saude':
+            AtualizaTabela(listasaude);
+
+            listasaude.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    var a = L.marker([lat, long], { icon: saudeIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listasaudeMakers.addLayer(a);
+        
+                }
+        
+            })
+            break;
+        case 'seguranca':
+            AtualizaTabela(listaseguranca);
+
+            listaseguranca.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    var a = L.marker([lat, long], { icon: segurancaIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listasegurancaMakers.addLayer(a);
+        
+                }
+        
+            })
+            break;
+        case 'turismo':
+            AtualizaTabela(listaturismoagencia);
+            listaturismoagencia.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    var a = L.marker([lat, long], { icon: turismoIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listaturismoagenciaMakers.addLayer(a);
+        
+                }
+        
+            })
+            listaturismohotel.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    // maluca
+                    var a = L.marker([lat, long], { icon: hotelIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listaturismohotelMakers.addLayer(a);
+        
+                }
+        
+            })
+            listaturismolocadoraCarro.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    var a = L.marker([lat, long], { icon: turismoIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listaturismolocadoraCarroMakers.addLayer(a);
+        
+                }
+        
+            })
+            listaturismorestaurante.map((educacao, index) => {
+                if (educacao.LAT && educacao.LONG) {
+                    let lat = parseFloat(educacao.LAT.replace(',', '.'))
+                    let long = parseFloat(educacao.LONG.replace(',', '.'))
+                    // louca
+                    var a = L.marker([lat, long], { icon: restauranteIco }).addTo(map)
+                        .on('mouseover', function () {
+                            this.bindPopup(educacao.NOME)
+                                .openPopup();
+                        })
+        
+                    listaturismorestauranteMakers.addLayer(a);
+        
+                }
+        
+            })
+            break;
+
+        default:
+            chamaTudo();
+            break;
+    }
+
+
+    
+    
+    
+    
+
+    // Inicia a atualização das informações do MAPA
+}
+
 /* Fazendo o mapa */
 
 var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
 });
+
 //possible colors 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'
 /* Ícone  */
 var cafeIcon = L.AwesomeMarkers.icon({
@@ -12,97 +223,70 @@ var cafeIcon = L.AwesomeMarkers.icon({
 });
 
 /* Setando o lugar */
+var localInicial = [-17.9392089508829, -40.5478813835762]
+navigator.geolocation.getCurrentPosition((data) => {
+    console.log(data)
+    localInicial[0] = data.coords.latitude
+    localInicial[1] = data.coords.longitude
+    /* DESCOMENTAR DEPOIS */
+    // map.setView(new L.LatLng(data.coords.latitude, data.coords.longitude), 12)
+    L.marker(localInicial).addTo(map)
+})
 var map = L.map('map')
     .addLayer(mapboxTiles)
-    .setView([-19.50889897, -40.65760008], 12);
+    .setView(localInicial, 12);
 /* ICONES */
 // Educacao
-var educacaoPoint = L.icon({
+var educacaoIco = L.icon({
     iconUrl: './img/icoEducacao.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
 });
 
 // Onibus //
-var busPoint = L.icon({
+var busIco = L.icon({
     iconUrl: './img/iconeOnibus.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
 });
 
 // Bombeiros //
-var bombeirosPoint = L.icon({
+var bombeirosIco = L.icon({
     iconUrl: './img/iconeBombeiros.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
 });
 
 // Saúde //
-var saudePoint = L.icon({
+var saudeIco = L.icon({
     iconUrl: './img/icoSaude.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
 });
 
 // seguranca //
-var segurancaPoint = L.icon({
+var segurancaIco = L.icon({
     iconUrl: './img/icoSeguranca.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
 });
 
 // turismo //
-var turismoPoint = L.icon({
+var turismoIco = L.icon({
     iconUrl: './img/icoTurismo.png',
-    iconSize: [50, 50]
+    iconSize: [24, 24]
+});
+// hotel //
+var hotelIco = L.icon({
+    iconUrl: './img/icoHotel.png',
+    iconSize: [24, 24]
+});
+// restaurante //
+var restauranteIco = L.icon({
+    iconUrl: './img/icoRestaurante.png',
+    iconSize: [30, 30]
 });
 
 /* Marcando no mapa */
-// L.marker([-20.195478, -40.207944], { icon: busPoint }).addTo(map);
-// L.marker([-9.048, -36.194], {icon: cafeIcon}).addTo(map);
-var Central = L.marker([-19.50889897, -40.65760008]).addTo(map);
+// L.marker([-20.195478, -40.207944], { icon: busIco }).addTo(map)
+// L.marker([-9.048, -36.194], {icon: cafeIcon}).addTo(map)
+var Central = L.marker(localInicial).addTo(map)
 
-var Onibus = L.marker([-19.4, -40.5], { icon: busPoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo busPoint')
-        .openPopup();
-    })
-    .addTo(map);
-var Educacao = L.marker([-19.51, -40.66], { icon: educacaoPoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo educacaoPoint')
-        .openPopup();
-    })
-    .addTo(map);
-var Bombeiros = L.marker([-19.53, -40.68], { icon: bombeirosPoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo bombeirosPoint')
-        .openPopup();
-    })
-    .addTo(map);
-var Saude = L.marker([-19.54, -40.69], { icon: saudePoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo saudePoint')
-        .openPopup();
-    })
-    .addTo(map);
-var Seguranca = L.marker([-19.557, -40.7], { icon: segurancaPoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo segurancaPoint')
-        .openPopup();
-    })
-    .addTo(map);
-var Turismo = L.marker([-19.557, -40.71], { icon: turismoPoint })
-    .on('mouseover', function () {
-        this.bindPopup('Testezinho brabo turismoPoint')
-        .openPopup();
-    })
-    .addTo(map);
-
-var tags = {
-    Central,
-    Onibus,
-    Educacao,
-    Bombeiros,
-    Saude,
-    Seguranca,
-    Turismo,
-}
 
 function verificaMapa() {
     let verificar = [
@@ -113,71 +297,195 @@ function verificaMapa() {
         'Onibus',
         'Bombeiros',
     ]
-
+    // educacaoMakers
+    // listasaudeMakers
+    // listasegurancaMakers
+    // listaturismoagenciaMakers
+    // listaturismohotelMakers
+    // listaturismolocadoraCarroMakers
+    // listaturismorestauranteMakers
     verificar.forEach((val) => {
-        console.log('------------------------------------');
-        let x = document.getElementById(`check${val}`);
-        console.log(x.checked);
-        console.log(val);
-        console.log(tags[val]);
-        if (x.checked) {
-            map.addLayer(tags[val]);
+        switch (val) {
+            case 'Saude':
+                removeLayers(listasaudeMakers, val)
+                break;
+            case 'Educacao':
+                removeLayers(educacaoMakers, val)
+                break;
+            case 'Seguranca':
+                removeLayers(listasegurancaMakers, val)
+                break;
+            case 'Turismo' || 'Onibus' || 'Bombeiros':
+                removeLayers(listaturismoagenciaMakers, val)
+                removeLayers(listaturismohotelMakers, val)
+                removeLayers(listaturismolocadoraCarroMakers, val)
+                removeLayers(listaturismorestauranteMakers, val)
+                break;
 
-        } else {
-            map.removeLayer(tags[val]);
-
+            default:
+                break;
         }
+
     })
 }
 
-$("#others").click(function () {
-    // map.addLayer(central)
-    map.removeLayer(central)
-    // map.removeLayer(cafes)
 
-});
-$("#cafes").click(function () {
-    // map.addLayer(cafes)
-    // map.removeLayer(central)
-    map.addLayer(central)
-});
-$("#allbus").click(function () {
-    map.addLayer(cafes)
-    map.addLayer(central)
+
+function removeLayers(layer, val) {
+    let x = document.getElementById(`check${val}`);
+
+    // console.log(x.checked);
+    // console.log(val);
+    // console.log(tags[val]);
+    if (x.checked) {
+        map.addLayer(layer);
+
+    } else {
+        map.removeLayer(layer);
+
+    }
+}
+
+map.on('zoomend', function () {
+    if (map.getZoom() < 10) {
+        map.removeLayer(educacaoMakers);
+        map.removeLayer(listasaudeMakers);
+        map.removeLayer(listasegurancaMakers);
+        map.removeLayer(listaturismoagenciaMakers);
+        map.removeLayer(listaturismohotelMakers);
+        map.removeLayer(listaturismolocadoraCarroMakers);
+        map.removeLayer(listaturismorestauranteMakers);
+    }
+    else {
+        map.addLayer(educacaoMakers);
+        map.addLayer(listasaudeMakers);
+        map.addLayer(listasegurancaMakers);
+        map.addLayer(listaturismoagenciaMakers);
+        map.addLayer(listaturismohotelMakers);
+        map.addLayer(listaturismolocadoraCarroMakers);
+        map.addLayer(listaturismorestauranteMakers);
+    }
 });
 
-// var promise = $.getJSON("businesses.json");
+async function chamaTudo() {
+    const dados = await funcBuscaGeral()
+    var listaEducacao = dados.educacao.dados.slice(0, 50)
+    var listasaude = dados['saude'].dados.slice(0, 100)
+    var listaseguranca = dados['seguranca'].dados.slice(0, 100)
+    var listaturismoagencia = dados['turismo/agencia'].dados.slice(0, 100)
+    var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
+    var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
+    var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
+    listaEducacao.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
 
-/* promise.then(function (data) {
-    var allbusinesses = L.geoJson(data);
-    var cafes = L.geoJson(data, {
-        filter: function (feature, layer) {
-            return feature.properties.BusType == "Cafe";
-        },
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {
-                icon: cafeIcon
-            }).on('mouseover', function () {
-                this.bindPopup(feature.properties.Name).openPopup();
-            });
         }
-    });
-    var others = L.geoJson(data, {
-        filter: function (feature, layer) {
-            return feature.properties.BusType != "Cafe";
-        },
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {
-            }).on('mouseover', function () {
-                this.bindPopup('Testezinho').openPopup();
-            });
-        }
-    });
-    map.fitBounds(allbusinesses.getBounds(), {
-        padding: [50, 50]
-    });
-    cafes.addTo(map)
-    others.addTo(map)
-    // The JavaScript below is new
+        let lat = parseFloat(educacao.LAT.replace(',', '.'))
+        let long = parseFloat(educacao.LONG.replace(',', '.'))
+        var a = L.marker([lat, long], { icon: educacaoIco })
+            .on('mouseover', function () {
+                this.bindPopup(educacao.NOME)
+                    .openPopup();
+            })
 
-}); */
+            .on('mouseover', function () {
+                this.bindPopup(educacao.SIGLAEXTEN)
+                    .openPopup();
+            })
+            .addTo(map)
+        educacaoMakers.addLayer(a);
+
+    })
+    listasaude.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: saudeIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listasaudeMakers.addLayer(a);
+
+        }
+
+    })
+    listaseguranca.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: segurancaIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listasegurancaMakers.addLayer(a);
+
+        }
+
+    })
+    listaturismoagencia.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: turismoIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listaturismoagenciaMakers.addLayer(a);
+
+        }
+
+    })
+    listaturismohotel.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            // maluca
+            var a = L.marker([lat, long], { icon: hotelIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listaturismohotelMakers.addLayer(a);
+
+        }
+
+    })
+    listaturismolocadoraCarro.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: turismoIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listaturismolocadoraCarroMakers.addLayer(a);
+
+        }
+
+    })
+    listaturismorestaurante.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            // louca
+            var a = L.marker([lat, long], { icon: restauranteIco }).addTo(map)
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+            listaturismorestauranteMakers.addLayer(a);
+
+        }
+
+    })
+}
