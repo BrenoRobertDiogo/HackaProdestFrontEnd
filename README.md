@@ -41,6 +41,7 @@ Lista de rotas da API.
 * /api/v1/turismo/hotel           - /api/v1/turismo/hotel/filtro?municipio=Serra
 * /api/v1/turismo/locadoraCarro   - /api/v1/turismo/locadoraCarro/filtro?municipio=Serra
 * /api/v1/turismo/restaurante    - /api/v1/turismo/restaurante/filtro?municipio=Serra
+* /api/v1/pontosOnibus
 
 ### 🗄 Base de dados
 Lista de links de onde coletamos os dados utilzados na nossa aplicação.
