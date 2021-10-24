@@ -26,7 +26,7 @@ window.onload = async function () {
     var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
     var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
     var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
-    var listaonibus = dados['pontosOnibus'].dados.slice(0, 100)
+    var listaonibus = dados['pontosOnibus'].dados
     
     var query = location.search.slice(1);
     var partes = query.split('&');
@@ -404,7 +404,7 @@ async function chamaTudo() {
     var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
     var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
     var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
-    var listaonibus = dados['pontosOnibus'].dados.slice(0, 100)
+    var listaonibus = dados['pontosOnibus'].dados
 
 
 

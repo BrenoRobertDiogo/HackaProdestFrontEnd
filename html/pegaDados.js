@@ -1,4 +1,4 @@
-const urlBase = 'http://d1c0-187-73-230-31.ngrok.io/api/v1/'// 'http://ed8e-187-73-230-31.ngrok.io/api/v1/educacao'
+const urlBase = 'http://localhost:5000/api/v1/'// 'http://ed8e-187-73-230-31.ngrok.io/api/v1/educacao'
 
 var rotas = ['educacao', 'saude','pontosOnibus', 'seguranca', 'turismo/agencia', 'turismo/hotel', 'turismo/locadoraCarro', 'turismo/restaurante'] // ["educacao", "saude", "seguranca", "hotel"]
 
