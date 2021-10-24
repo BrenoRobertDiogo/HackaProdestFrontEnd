@@ -11,10 +11,10 @@ const funcBuscaGeral = async () => {
         var query = location.search.slice(1);
         var partes = query.split('&');
         var params = window.location.search.substr(1).split('&');
-        if (params[0]) {
-            console.log(params);
-
-            var url = urlBase + rota + '?municipio='+params[0].split('=')[1]
+        console.log(params[0].split('=')[1])
+        if (params[0] && rotas[index] != "pontosOnibus") {
+            var url = urlBase + rota + '/filtro?municipio='+params[0].split('=')[1]
+            console.log(url)
         } else {
             var url = urlBase + rota
         }
