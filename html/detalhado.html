@@ -61,6 +61,10 @@
         .btn.btn-sm {
             max-width: 100%;
         }
+        .scrollTabela{
+            height:350px !important;
+            overflow-y: auto !important;
+        }
     </style>
 </head>
 
@@ -81,9 +85,7 @@
 
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/html/detalhado.html">DETALHADO APAGAR DEPOIS</a>
-                </li>
+
                 <li class="nav-item active">
                     <a class="nav-link" href="/html/detalhado.html?pagina=saude">
                         <i class="fas fa-medkit"></i> Saúde
@@ -111,21 +113,26 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-
-        <table class="table table-sm table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Logradouro</th>
-                    <th scope="col" style="width: 10%"></th>
-                </tr>
-            </thead>
-            <tbody id="tabelaDetalhe">
-                <!-- Atualizado pelo javascript -->
-            </tbody>
-        </table>
-
+    <div class="container mt-5 ">
+        <div class="row scrollTabela">
+            <table class="table table-sm table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Logradouro</th>
+                        <th scope="col">Municipio</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col" style="width: 10%"></th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaDetalhe">
+                    <!-- Atualizado pelo javascript -->
+                </tbody>
+            </table>
+        </div>
+        <div class="row mt-5">
+            <div id="map"></div>
+        </div>
 
         <!-- <form class="form-inline my-2 my-lg-0 d-flex justify-content-center mt-5">
             <input class="form-control mr-4" type="search" placeholder="Procurar lugar" aria-label="Search">
@@ -136,7 +143,6 @@
 
 
         <!-- MAPA É ISSO AQUI EMBAIXO -->
-        <div id="map"></div>
 
 
 

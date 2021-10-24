@@ -9,6 +9,7 @@ var listaturismoagenciaMakers = new L.FeatureGroup();
 var listaturismohotelMakers = new L.FeatureGroup();
 var listaturismolocadoraCarroMakers = new L.FeatureGroup();
 var listaturismorestauranteMakers = new L.FeatureGroup();
+var onibusMakers = new L.FeatureGroup();
 
 function verNoMapa(lat, long) {
     console.log(lat, " ", long);
@@ -25,7 +26,8 @@ window.onload = async function () {
     var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
     var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
     var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
-
+    var listaonibus = dados['pontosOnibus'].dados.slice(0, 100)
+    
     var query = location.search.slice(1);
     var partes = query.split('&');
     var params = {};
@@ -40,6 +42,8 @@ window.onload = async function () {
     const BaseDadoTabela = (dado) => {
         const rua  = dado.LOGRADOURO || dado.ENDERECO_COMPLETO_COMERCIAL
         const nome = dado.NOME || dado.NOME_PESSOA_JURIDICA
+        const telefone = dado.TELEFONE || 'Sem telefone'
+        const municipio = dado.MUNICIPIO || 'Sem municipio'
         var botao  = "-"
         if( dado.LAT != null ){
             const lat = parseFloat(dado.LAT.replace(',', '.'))
@@ -49,8 +53,10 @@ window.onload = async function () {
         
         var aux = ""
         aux += "<tr>\n"
-        aux += `    <td>${rua}</td>\n`
         aux += `    <td>${nome}</td>\n`
+        aux += `    <td>${rua}</td>\n`
+        aux += `    <td>${municipio}</td>\n`
+        aux += `    <td>${telefone}</td>\n`
         aux += `    <td>${botao}</td>\n`
         aux += "</tr>\n"
         return aux
@@ -66,6 +72,24 @@ window.onload = async function () {
 
 
     switch (params.pagina) {
+        case 'pontosOnibus':
+            listaonibus.map((onibus, index) => {
+                if (onibus.LAT && onibus.LONG) {
+
+                }
+                let lat = parseFloat(onibus.LAT.replace(',', '.'))
+                let long = parseFloat(onibus.LONG.replace(',', '.'))
+                var a = L.marker([lat, long], { icon: busIco })
+                    .on('mouseover', function () {
+                        this.bindPopup('Ponto')
+                            .openPopup();
+                    })
+                    .addTo(map)
+                onibusMakers.addLayer(a);
+
+            })
+            break
+
         case 'educacao':
             console.log(listaEducacao);            
             AtualizaTabela(listaEducacao);
@@ -306,6 +330,8 @@ function verificaMapa() {
     // listaturismorestauranteMakers
     verificar.forEach((val) => {
         switch (val) {
+            case 'Onibus':
+                removeLayers(onibusMakers, val)
             case 'Saude':
                 removeLayers(listasaudeMakers, val)
                 break;
@@ -348,6 +374,7 @@ function removeLayers(layer, val) {
 
 map.on('zoomend', function () {
     if (map.getZoom() < 10) {
+        map.removeLayer(onibusMakers);
         map.removeLayer(educacaoMakers);
         map.removeLayer(listasaudeMakers);
         map.removeLayer(listasegurancaMakers);
@@ -357,6 +384,7 @@ map.on('zoomend', function () {
         map.removeLayer(listaturismorestauranteMakers);
     }
     else {
+        map.addLayer(onibusMakers);
         map.addLayer(educacaoMakers);
         map.addLayer(listasaudeMakers);
         map.addLayer(listasegurancaMakers);
@@ -376,24 +404,43 @@ async function chamaTudo() {
     var listaturismohotel = dados['turismo/hotel'].dados.slice(0, 100)
     var listaturismolocadoraCarro = dados['turismo/locadoraCarro'].dados.slice(0, 100)
     var listaturismorestaurante = dados['turismo/restaurante'].dados.slice(0, 100)
-    listaEducacao.map((educacao, index) => {
-        if (educacao.LAT && educacao.LONG) {
+    var listaonibus = dados['pontosOnibus'].dados.slice(0, 100)
 
+
+
+    listaonibus.map((onibus, index) => {
+        if (onibus.LAT && onibus.LONG) {
+
+            let lat = parseFloat(onibus.LAT.replace(',', '.'))
+            let long = parseFloat(onibus.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: busIco })
+                .on('mouseover', function () {
+                    this.bindPopup('Ponto')
+                        .openPopup();
+                })
+                .addTo(map)
+            onibusMakers.addLayer(a);
         }
-        let lat = parseFloat(educacao.LAT.replace(',', '.'))
-        let long = parseFloat(educacao.LONG.replace(',', '.'))
-        var a = L.marker([lat, long], { icon: educacaoIco })
-            .on('mouseover', function () {
-                this.bindPopup(educacao.NOME)
-                    .openPopup();
-            })
 
-            .on('mouseover', function () {
-                this.bindPopup(educacao.SIGLAEXTEN)
-                    .openPopup();
-            })
-            .addTo(map)
-        educacaoMakers.addLayer(a);
+    })
+
+    listaEducacao.map((educacao, index) => {
+        if (educacao.LAT && educacao.LONG) {        
+            let lat = parseFloat(educacao.LAT.replace(',', '.'))
+            let long = parseFloat(educacao.LONG.replace(',', '.'))
+            var a = L.marker([lat, long], { icon: educacaoIco })
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.NOME)
+                        .openPopup();
+                })
+
+                .on('mouseover', function () {
+                    this.bindPopup(educacao.SIGLAEXTEN)
+                        .openPopup();
+                })
+                .addTo(map)
+            educacaoMakers.addLayer(a);
+        }
 
     })
     listasaude.map((educacao, index) => {
